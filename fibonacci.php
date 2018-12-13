@@ -10,21 +10,18 @@
  */
 function fibonacciDiagonalSum(int $n): int
 {
-    // Получаем массив-последовательность Фибоначчи
     $square = pow($n, 2);
-    $makeFibSet = function ($i, $acc) use (&$square, &$makeFibSet) {
+    function makeFibSet($square, $i, $acc) {
         if ($i === $square) {
             return $acc;
         }
         $acc[] = $acc[$i - 1] + $acc[$i - 2];
-        return $makeFibSet($i + 1, $acc);
+        return makeFibSet($square,$i + 1, $acc);
     };
-    $fibSet = $makeFibSet(2, [1, 1]);
+    $fibSet = makeFibSet($square,2, [1, 1]);
 
-    // Строим двумерный массив как в задании
     $fibArray = array_map(null, ...array_chunk($fibSet, $n));
 
-    // Собственно получаем сумму
     $count = $n - 1;
     return array_reduce($fibArray, function ($acc, $item) use (&$count) {
         $acc += $item[$count];
